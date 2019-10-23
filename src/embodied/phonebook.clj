@@ -9,12 +9,7 @@
     :cell 2393920}])
 
 (def phonebook
-  (into
-   {}
-   (map (fn [person]
-          [(:name person) person]))
-   people)
-  )
+  (group-by :name people))
 
 (defn lookup [name]
   (get phonebook name))

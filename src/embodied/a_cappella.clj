@@ -15,3 +15,7 @@
    (future (say "Samantha" "Hello friends"))
    (future (say "Fred" "Hello friends")))
  )
+
+(say "Samantha" "hello jackie")
+
+(defn greet [])
