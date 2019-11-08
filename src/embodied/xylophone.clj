@@ -138,6 +138,117 @@
    {:family "Sound Effects", :instrument "Applause", :number 126}
    {:family "Sound Effects", :instrument "Gunshot", :number 127}])
 
+(def note->midi
+  {:A#0/Bb0 22
+   :A#1/Bb1 34
+   :A#2/Bb2 46
+   :A#3/Bb3 58
+   :A#4/Bb4 70
+   :A#5/Bb5 82
+   :A#6/Bb6 94
+   :A#7/Bb7 106
+   :A#8/Bb8 118
+   :A0      21
+   :A1      33
+   :A2      45
+   :A3      57
+   :A4      69
+   :A5      81
+   :A6      93
+   :A7      105
+   :A8      117
+   :B0      23
+   :B1      35
+   :B2      47
+   :B3      59
+   :B4      71
+   :B5      83
+   :B6      95
+   :B7      107
+   :B8      119
+   :C#1/Db1 25
+   :C#2/Db2 37
+   :C#3/Db3 49
+   :C#4/Db4 61
+   :C#5/Db5 73
+   :C#6/Db6 85
+   :C#7/Db7 97
+   :C#8/Db8 109
+   :C#9/Db9 121
+   :C1      24
+   :C2      36
+   :C3      48
+   :C4      60
+   :C5      72
+   :C6      84
+   :C7      96
+   :C8      108
+   :C9      120
+   :D#1/Eb1 27
+   :D#2/Eb2 39
+   :D#3/Eb3 51
+   :D#4/Eb4 63
+   :D#5/Eb5 75
+   :D#6/Eb6 87
+   :D#7/Eb7 99
+   :D#8/Eb8 111
+   :D#9/Eb9 123
+   :D1      26
+   :D2      38
+   :D3      50
+   :D4      62
+   :D5      74
+   :D6      86
+   :D7      98
+   :D8      110
+   :D9      122
+   :E1      28
+   :E2      40
+   :E3      52
+   :E4      64
+   :E5      76
+   :E6      88
+   :E7      100
+   :E8      112
+   :E9      124
+   :F#1/Gb1 30
+   :F#2/Gb2 42
+   :F#3/Gb3 54
+   :F#4/Gb4 66
+   :F#5/Gb5 78
+   :F#6/Gb6 90
+   :F#7/Gb7 102
+   :F#8/Gb8 114
+   :F#9/Gb9 126
+   :F1      29
+   :F2      41
+   :F3      53
+   :F4      65
+   :F5      77
+   :F6      89
+   :F7      101
+   :F8      113
+   :F9      125
+   :G#1/Ab1 32
+   :G#2/Ab2 44
+   :G#3/Ab3 56
+   :G#4/Ab4 68
+   :G#5/Ab5 80
+   :G#6/Ab6 92
+   :G#7/Ab7 104
+   :G#8/Ab8 116
+   :G1      31
+   :G2      43
+   :G3      55
+   :G4      67
+   :G5      79
+   :G6      91
+   :G7      103
+   :G8      115
+   :G9      127})
+
+
+
 (defn find-instrument [name]
   (let [name (str/lower-case name)]
     (some #(when (-> % :instrument str/lower-case (str/includes? name))
@@ -176,7 +287,7 @@
  (load-instrument "electric Guitar" true)
  (load-instrument "voice" true)
 
- (play-notes c-octave 200)
+ (play-notes (shuffle [48 50 52 53 55 57 59 60]) 200)
  )
 
 

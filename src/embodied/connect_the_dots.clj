@@ -68,12 +68,19 @@
    [[5 18] [4 19]]
    [[11 18] [10 19]]])
 
+(def ursa-major
+  [[[1 2] [2 1] [3 1] [5 2] [6 4] [7 3] [6 2] [5 2]]])
+
+(def ursa-major-flipped
+  [ [[1 6] [2 7] [3 7] [5 6] [6 4] [7 5] [6 6] [5 6]]])
+
 (defn setup []
-  (q/frame-rate 2)
+  (q/frame-rate 1)
   (q/stroke 255)
   (q/stroke-weight 0.1)
   (q/background 252 131 203)
   {:lines            kitty-cat-dots
+                     #_ursa-major-flipped
    :current-line-idx 0})
 ;; a nice shade of grey.
 (defn draw [{:keys [lines current-line-idx]}]

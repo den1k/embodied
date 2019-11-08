@@ -17,5 +17,7 @@
  )
 
 (say "Samantha" "hello jackie")
+;; have the computer sing it uglyly
 
 (defn greet [])
+

@@ -1,82 +1,48 @@
-(ns embodied.functions
-  (:require [clojure.java.shell :refer [sh]]
-            [clojure.repl :refer [source]]))
+(ns embodied.functions)
 
-(comment
- +
+(def people
+  ;; TODO fill with names of people from group
+  [{:name     "Alex"
+    :dancing? true
+    :tiptoes? false}
+   {:name     "Eve"
+    :dancing? false
+    :tiptoes? false}
+   {:name     "Jane"
+    :dancing? true
+    :tiptoes? false}
+   {:name     "Fred"
+    :dancing? false
+    :tiptoes? false}])
 
- (+ 2 3 4)
+;; *** map
 
- (source +))
+(defn tiptoes! [person]
+  (assoc person :tiptoes? true))
 
-;; Let's make a greeting function
+(tiptoes! (first people))
 
-(comment
- (defn )
+(map tiptoes! people)
 
- (defn greet)
+;; *** filter
 
- (defn greet [name])
+(filter :dancing? people)
 
- (defn greet [name]
-   "Hi")
+;; *** group-by
 
- (defn greet [name]
-   "Hi" name)
+(def dance-moves
+  ;; TODO add to with group
+  ["moon walk"
+   "lock step"
+   "spin"
+   "stomp"
+   "seagrass"
+   "shuffle"])
 
- ;; but that doesn't work
- ;; it just returns the last value
- ;; we need sth to combine the two
- ;; `str` to the rescue
+(defn person-with-dance-move [person]
+  (assoc person :dance-move (rand-nth dance-moves)))
 
- (defn greet [name]
-   (str "Hi" name))
+(def people-with-dance-moves
+  (map person-with-dance-move people))
 
- )
-
-(defn say
-  ([phrase] (sh "say" phrase))
-  ([voice phrase]
-   (sh "say" phrase "-v" voice)))
-
-(comment
- (say "Samantha" "Hello friends")
- (say "Victoria" "Hello friends")
- (say "Alex" "Hello friends")
- (say "Fred" "Hello friends")
- (do
-   (future (say "Samantha" "Hello friends"))
-   (future (say "Fred" "Hello friends")))
- )
-
-(defn greet [name]
-  (say "Victoria" (str "Hello " name)))
-
-
-
-;; *** definition
-
-(defn function-1 []
-  ;; something it does
-  (println "I'm function-1")
-  )
-
-(defn function-2 [param-1]
-  (println "I'm function-2 with param-1: " param-1)
-  )
-
-(defn function-3 [param-1 param-2]
-  (println "I'm function-3 with param-1: "
-           param-1
-           "and param-2: "
-           param-2)
-  )
-
-;; *** invocation
-
-(comment
-  (function-1)
-  (function-2 "Hello")
-  (function-3 "Hello" "Is it me you're looking for")
-
-  )
+(group-by :dance-move people-with-dance-moves)
