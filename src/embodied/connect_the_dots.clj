@@ -3,6 +3,56 @@
   (:require [quil.core :as q]
             [quil.middleware :as m]))
 
+(def face-by-chloe
+  [;; left dimple
+   [[2 6] [3 7] [2 7]]
+   [[3 7] [2 8]]
+   ;; right dimple
+   [[11 6] [10 7] [11 7]]
+   [[10 7] [11 8]]
+   ;; mouth
+   [[5 9] [8 9] [8 10] [7 11] [6 11] [5 10] [7 10]]
+   ;; nose
+   [[6 6] [5 8] [6 8] [6 7] [7 7] [7 8] [8 8] [7 6]]
+   ;; left eye
+   [[3 4] [5 4] [5 5] [3 5] [3 4]]
+   [[3 3] [5 3] [6 4] [6 5] [5 6] [3 6] [2 5] [2 4] [3 3]]
+   ;; right eye
+   [[8 4] [10 4] [10 5] [8 5] [8 4]]
+   [[8 3] [10 3] [11 4] [11 5] [10 6] [8 6] [7 5] [7 4] [8 3]]
+   ;; face contour
+   [[3 1]
+    [4 1]
+    [5 2]
+    [8 2]
+    [9 1]
+    [10 1]
+    [12 4]
+    [12 8]
+    [9 12]
+    [4 12]
+    [1 8]
+    [1 4]
+    [3 1]]])
+;; todo draw grid
+
+(defn grid-lines [cell-size grid-size]
+  (let [points (range 0 (inc grid-size) cell-size)]
+    (concat
+     (map (fn [x] [[x 0] [x grid-size]]) points)
+     (map (fn [y] [[0 y] [grid-size y]]) points))
+    )
+  )
+;(grid-lines 2 10)
+
+(clojure.walk/postwalk #(if (and (vector? %) (number? (first %)))
+                          (-> %
+                              (update 0 + 1)
+                              (update 1 + 1)
+                              )
+                          %)
+                       face-by-chloe)
+
 (def kitty-cat-dots
   "https://www.worksheetworks.com/math/geometry/graphing/coordinate-pictures/cat.html"
   [[[4 8] [7 7] [4 6]]
@@ -72,20 +122,30 @@
   [[[1 2] [2 1] [3 1] [5 2] [6 4] [7 3] [6 2] [5 2]]])
 
 (def ursa-major-flipped
-  [ [[1 6] [2 7] [3 7] [5 6] [6 4] [7 5] [6 6] [5 6]]])
+  [[[1 6] [2 7] [3 7] [5 6] [6 4] [7 5] [6 6] [5 6]]])
+
+(def grid-size 13)
+(def scale 30)
+(def dims (repeat 2 (* scale grid-size)))
 
 (defn setup []
-  (q/frame-rate 1)
+  ;(q/frame-rate 1)
+  (q/background 252 131 203)
+  (q/scale 30)
+  (q/stroke-weight 0.05)
+  (q/stroke 255 100)
+  (doseq [[p1 p2] (grid-lines 1 grid-size)]
+    (q/line p1 p2))
   (q/stroke 255)
   (q/stroke-weight 0.1)
-  (q/background 252 131 203)
-  {:lines            kitty-cat-dots
-                     #_ursa-major-flipped
-   :current-line-idx 0})
+
+  {:lines            #_kitty-cat-dots face-by-chloe
+   #_ursa-major-flipped
+   :current-line-idx                  0})
 ;; a nice shade of grey.
 (defn draw [{:keys [lines current-line-idx]}]
   (when-let [points (get lines current-line-idx)] ;; Set the y coord randomly within the sketch
-    (q/scale 20)
+    (q/scale 30)
     (doseq [[p1 p2] (partition 2 1 points)]
       (q/line p1 p2))))
 
@@ -96,4 +156,6 @@
              :setup setup
              :draw draw
              :update (fn [state] (update state :current-line-idx inc))
-             :size [400 400])
+             :size dims
+             :features [:keep-on-top]
+             )
