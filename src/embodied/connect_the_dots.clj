@@ -3,11 +3,11 @@
   (:require [quil.core :as q]
             [quil.middleware :as m]))
 
-(def face-by-chloe
-  [;; left dimple
+(def cat-by-chloe
+  [;; left whiskers
    [[2 6] [3 7] [2 7]]
    [[3 7] [2 8]]
-   ;; right dimple
+   ;; right whiskers
    [[11 6] [10 7] [11 7]]
    [[10 7] [11 8]]
    ;; mouth
@@ -34,128 +34,114 @@
     [1 8]
     [1 4]
     [3 1]]])
-;; todo draw grid
+
+(def cat-by-chloe2
+  [
+   [[2 6] [3 7] [2 7]]                  ; micah
+   [[3 7] [2 8]]                        ; scarlet
+   [[11 6] [10 7] [11 7]]               ; austin
+   [[10 7] [11 8]]                      ; sascha
+
+   [[5 9] [8 9] [8 10] [7 11] [6 11] [5 10] [7 10]] ; alison
+
+   [[6 6] [5 8] [6 8] [6 7] [7 7] [7 8] [8 8] [7 6]] ; chloe
+
+   [[3 4] [5 4] [5 5] [3 5] [3 4]]      ; yedi
+   [[3 3] [5 3] [6 4] [6 5] [5 6] [3 6] [2 5] [2 4] [3 3]] ; abby
+
+   [[8 4] [10 4] [10 5] [8 5] [8 4]]    ; tara
+   [[8 3] [10 3] [11 4] [11 5] [10 6] [8 6] [7 5] [7 4] [8 3]] ; walter
+
+   [[3 1]
+    [4 1]
+    [5 2]
+    [8 2]
+    [9 1]
+    [10 1]
+    [12 4]
+    [12 8]
+    [9 12]
+    [4 12]
+    [1 8]
+    [1 4]
+    [3 1]]                              ; rachel
+   ])
 
 (defn grid-lines [cell-size grid-size]
   (let [points (range 0 (inc grid-size) cell-size)]
     (concat
      (map (fn [x] [[x 0] [x grid-size]]) points)
-     (map (fn [y] [[0 y] [grid-size y]]) points))
-    )
-  )
-;(grid-lines 2 10)
-
-(clojure.walk/postwalk #(if (and (vector? %) (number? (first %)))
-                          (-> %
-                              (update 0 + 1)
-                              (update 1 + 1)
-                              )
-                          %)
-                       face-by-chloe)
-
-(def kitty-cat-dots
-  "https://www.worksheetworks.com/math/geometry/graphing/coordinate-pictures/cat.html"
-  [[[4 8] [7 7] [4 6]]
-   [[14 15] [13 16] [12 15] [12 12]]
-   [[6 18] [5 19]]
-   [[14 7] [11 7]]
-   [[10 18] [8 18] [7 17] [6 15]]
-   [[14 16]
-    [15 17]
-    [17 17]
-    [19 16]
-    [20 13]
-    [20 11]
-    [19 9]
-    [17 8]
-    [15 8]
-    [14 9]
-    [16 9]
-    [17 9]
-    [18 10]
-    [19 12]
-    [18 15]
-    [17 16]
-    [16 16]
-    [14 14]]
-   [[14 8] [11 7] [14 6]]
-   [[8 7] [9 8] [10 7]]
-   [[8 18]
-    [6 19]
-    [4 19]
-    [4 18]
-    [6 17]
-    [5 15]
-    [6 13]
-    [5 11]
-    [3 10]
-    [1 7]
-    [2 6]
-    [3 7]
-    [4 9]
-    [6 10]
-    [7 9]
-    [6 7]
-    [6 2]
-    [8 4]
-    [10 4]
-    [12 2]
-    [12 7]
-    [11 9]
-    [13 10]
-    [14 11]
-    [14 16]
-    [12 19]
-    [10 19]
-    [10 18]
-    [12 17]
-    [10 16]
-    [9 15]
-    [9 14]
-    [10 13]]
-   [[11 19] [12 18]]
-   [[4 7] [7 7]]
-   [[5 18] [4 19]]
-   [[11 18] [10 19]]])
-
-(def ursa-major
-  [[[1 2] [2 1] [3 1] [5 2] [6 4] [7 3] [6 2] [5 2]]])
-
-(def ursa-major-flipped
-  [[[1 6] [2 7] [3 7] [5 6] [6 4] [7 5] [6 6] [5 6]]])
+     (map (fn [y] [[0 y] [grid-size y]]) points))))
 
 (def grid-size 13)
-(def scale 30)
+(def scale 60)
 (def dims (repeat 2 (* scale grid-size)))
 
 (defn setup []
   ;(q/frame-rate 1)
-  (q/background 252 131 203)
-  (q/scale 30)
-  (q/stroke-weight 0.05)
-  (q/stroke 255 100)
+  (q/color-mode :hsb 100)
+  (q/background 4 10 100)
+  (q/scale scale)
+  (q/stroke-weight 0.02)
+  ;(q/stroke 255 100)
+  (q/stroke 0 30)
   (doseq [[p1 p2] (grid-lines 1 grid-size)]
     (q/line p1 p2))
   (q/stroke 255)
   (q/stroke-weight 0.1)
-
-  {:lines            #_kitty-cat-dots face-by-chloe
-   #_ursa-major-flipped
-   :current-line-idx                  0})
+  {:lines face-by-chloe})
 ;; a nice shade of grey.
-(defn draw [{:keys [lines current-line-idx]}]
-  (when-let [points (get lines current-line-idx)] ;; Set the y coord randomly within the sketch
-    (q/scale 30)
-    (doseq [[p1 p2] (partition 2 1 points)]
-      (q/line p1 p2))))
+(defn draw [{:keys [current-lines]}]
+  (when-let [[[p1 p2]] current-lines]
+    (println p1 p2)
+    (q/scale scale)
+    ;(q/color-mode :hsb 100)
+    ;(q/stroke (rand-int 100) 100 90)
+    (q/line p1 p2)))
 
-(q/defsketch example
-             :title "Connect The Dots!"
-             ;:settings #(q/smooth 2)
-             :middleware [m/fun-mode]
-             :setup setup
-             :draw draw
-             :update (fn [state] (update state :current-line-idx inc))
-             :size dims
-             :features [:keep-on-top]
-             )
+(defn jitter [[[x1 y1] [x2 y2]]]
+  (let [dx        (- x2 x1)
+        dy        (- y2 y1)
+        step      0.1
+        wiggle    0.4
+        wiggle-fn #(- (* wiggle (rand)) (/ wiggle 2))]
+    (mapv (fn [fac]
+            [(+ x1 (* dx fac) (wiggle-fn))
+             (+ y1 (* dy fac) (wiggle-fn))])
+          (range 0 (+ 1 step) step))))
+
+
+(comment
+
+ (->> face-by-chloe
+      first
+      (partition 2 1)
+      (mapcat (comp #(partition 2 1 %) jitter))
+
+      )
+ )
+
+(q/defsketch
+ example
+ :title "Connect The Dots!"
+ ;:settings #(q/smooth 2)
+ :middleware [m/fun-mode]
+ :setup setup
+ :draw draw
+ :update (fn [{:as state :keys [lines current-lines]}]
+           (if-let [more-points (next current-lines)]
+             (assoc state
+               :current-lines more-points)
+             (do
+               (q/color-mode :hsb 100)
+               (q/stroke (rand-int 100) 100 90)
+               (assoc state
+                 :lines (next lines)
+                 :current-lines (->> lines
+                                     first
+                                     (partition 2 1)
+                                     (mapcat (comp #(partition 2 1 %) jitter))
+                                     not-empty)))))
+ :size dims
+ :features [:keep-on-top]
+ )

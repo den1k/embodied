@@ -1,23 +1,23 @@
 (ns embodied.functions)
 
 (def people
-  ;; TODO fill with names of people from group
-  [{:name     "Alex"
-    :dancing? true
-    :tiptoes? false}
-   {:name     "Eve"
-    :dancing? false
-    :tiptoes? false}
-   {:name     "Jane"
-    :dancing? true
-    :tiptoes? false}
-   {:name     "Fred"
-    :dancing? false
-    :tiptoes? false}])
+  [{:name "Rachel", :dancing? false, :tiptoes? false}
+   {:name "Austin", :dancing? false, :tiptoes? false}
+   {:name "Macie", :dancing? false, :tiptoes? false}
+   {:name "Alice A", :dancing? false, :tiptoes? false}
+   {:name "Micah", :dancing? false, :tiptoes? false}
+   {:name "Chloe", :dancing? false, :tiptoes? false}
+   {:name "Scarlet", :dancing? false, :tiptoes? false}
+   {:name "Sascha", :dancing? false, :tiptoes? false}
+   {:name "Walter", :dancing? false, :tiptoes? false}])
+
 
 ;; *** map
 
+
 (defn tiptoes! [person]
+  (println "I'm putting" (:name person) "on tiptoes")
+  (Thread/sleep 1000)
   (assoc person :tiptoes? true))
 
 (tiptoes! (first people))
@@ -31,7 +31,6 @@
 ;; *** group-by
 
 (def dance-moves
-  ;; TODO add to with group
   ["moon walk"
    "lock step"
    "spin"

@@ -6,6 +6,30 @@
   ([voice phrase]
    (sh "say" phrase "-v" voice)))
 
+(def phrases
+  ["Once upon a time"
+   "There was a mouse"
+   "That loved cheese"
+   "The mouse couldn't find cheese today"
+   "So it needed to learn to make cheese"
+   "It went to the library to look for books on how to make
+   cheese"
+   "It found and read 3 of them. The mouse learned that to make
+   cheese it needs milk and salt."
+   "Then the mouse went home to make cheese"])
+
+(def voices
+  ["Fred" "Alex" "Victoria" "Samantha"])
+
+(map #(say (rand-nth voices) %) phrases)
+
+(defn story [sentences])
+
+(say "Victoria"
+     "hey alice, how are you")
+
+
+
 (comment
  (say "Samantha" "Hello friends")
  (say "Victoria" "Hello friends")

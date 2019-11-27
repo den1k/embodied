@@ -288,6 +288,7 @@
  (load-instrument "voice" true)
 
  (play-notes (shuffle [48 50 52 53 55 57 59 60]) 200)
+ (play-notes (range 48 60) 200)
  )
 
 
